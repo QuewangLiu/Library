@@ -27,20 +27,20 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
     def addRead(self):
         add.show()
 
-    # def showEvent(self, *args, **kwargs):
-    #     self.listWidget.clear()
-    #     f = open('ReadingRoom.txt', 'r')
-    #     name = f.readline()
-    #     while name != "":
-    #         newItem = QListWidgetItem(name)
-    #         self.listWidget.addItem(newItem)
-    #         name = f.readline()
-    #     f.close()
+    def showEvent(self, *args, **kwargs):
+        self.listWidget.clear()
+        f = open('..\ReadingRoom.txt', 'r')
+        name = f.readline()
+        while name != "":
+            newItem = QListWidgetItem(name)
+            self.listWidget.addItem(newItem)
+            name = f.readline()
+        f.close()
 
     def showRoom(self):
         self.tableWidget.clear()
         row=self.listWidget.currentRow()
-        fname='ReadingRoom/'+self.listWidget.item(row).text().strip('\n')+'.txt'
+        fname='..\ReadingRoom/'+self.listWidget.item(row).text().strip('\n')+'.txt'
         fobj=open(fname,'r')
         name = fobj.readline()
         while name != "":
@@ -81,11 +81,16 @@ class addWimdow(QtWidgets.QMainWindow,Ui_addReadingRoom):
         elif len(x)==0:
             self.label_2.setText( "座位不能为空")
         else:
-            f=open('ReadingRoom.txt','r+')
-            if f.readline()==(self.lineEdit.text()+"\n"):
-                self.label_2.setText("名称重复")
-            else:
-                fname='ReadingRoom/'+self.lineEdit.text()+'.txt'
+            f=open('..\ReadingRoom.txt','r+')
+            name=f.readline()
+            bool=True
+            while name!='':
+                if name==(self.lineEdit.text()+"\n"):
+                    self.label_2.setText("名称重复")
+                    bool=False
+                name=f.readline()
+            if bool:
+                fname='..\ReadingRoom/'+self.lineEdit.text()+'.txt'
                 # if os.path.exists(fname):
                 #     self.label_2.setText("阅览室已存在")
                 # else:
@@ -129,7 +134,7 @@ if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
     add=addWimdow()
     addVip=addVip()
-    splash = QtWidgets.QSplashScreen(QtGui.QPixmap('img.png'))
+    splash = QtWidgets.QSplashScreen(QtGui.QPixmap('..\img.png'))
     splash.showMessage("加载... 0%", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
     splash.show()  # 显示启动界面
     QtWidgets.qApp.processEvents()  # 处理主进程事/件
