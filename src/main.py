@@ -15,8 +15,24 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
         self.pushButton.clicked.connect(self.find)
 
     def find(self):
-        print(self.dateTimeEdit.text())
-        print(self.listWidget.currentItem().text())
+        time=self.dateTimeEdit.text()
+        row = self.listWidget.currentRow()
+        fname = '..\ReadingRoom/' + self.listWidget.item(row).text().strip('\n') + '.txt'
+        fobj = open(fname, 'r')
+        name = fobj.readline()
+        while name != "":
+            line = name.strip('\n')
+            line = line.split(" ")
+            num = 0
+            for i in line[0]:
+                num=num*10+int(i)
+            zhuanye=line[2]
+
+            newItem = QTableWidgetItem(line[1])              #查询的时间
+            newItem.setBackground(QtCore.Qt.gray)        #空闲灰色
+            # newItem.setBackground(QtCore.Qt.red)       #非空闲显示红色
+            self.tableWidget.setItem(num / 10, num % 10, newItem)
+            name = fobj.readline()
 
     def load_data(self, sp):
         for i in range(1, 100):  # 模拟主程序加载过程
@@ -45,8 +61,9 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
         name = fobj.readline()
         while name != "":
             line=name.strip('\n')
+            line=line.split(" ")
             num=0
-            for i in line:
+            for i in line[0]:
                 num=num*10+int(i)
             newItem=QTableWidgetItem()
             newItem.setBackground(QtCore.Qt.gray)
@@ -97,7 +114,7 @@ class addWimdow(QtWidgets.QMainWindow,Ui_addReadingRoom):
                 f.write(self.lineEdit.text() + "\n")
                 fobj=open(fname,'w')
                 for num in x:
-                    fobj.write(str(num)+"\n")
+                    fobj.write(str(num)+" "+self.tableWidget.item(num/10,num%10).text()+"\n")
                 fobj.close()
                 reply=QMessageBox.information(self,"Tips","添加成功")
                 if reply==QMessageBox.Ok:
