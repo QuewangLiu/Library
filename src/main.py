@@ -6,6 +6,9 @@ from PyQt5 import QtWidgets,QtGui,QtCore
 from UI.vip import Ui_vip
 import sys
 
+import pickle
+with open('..\major_dict.pkl', 'rb') as f:model = pickle.load(f)
+
 class mainWindow(QtWidgets.QMainWindow, Ui_Library):
     def __init__(self):
         super(mainWindow, self).__init__()
@@ -118,6 +121,14 @@ class addWimdow(QtWidgets.QMainWindow,Ui_addReadingRoom):
                 fobj.close()
                 reply=QMessageBox.information(self,"Tips","添加成功")
                 if reply==QMessageBox.Ok:
+                    window.listWidget.clear()
+                    f = open('..\ReadingRoom.txt', 'r')
+                    name = f.readline()
+                    while name != "":
+                        Item = QListWidgetItem(name)
+                        window.listWidget.addItem(Item)
+                        name = f.readline()
+                    f.close()
                     self.close()
                 f.close()
 
@@ -132,7 +143,8 @@ class addVip(QtWidgets.QMainWindow,Ui_vip):
         super(addVip, self).__init__()
         self.setupUi(self)
         self.pushButton.clicked.connect(self.click)
-        self.comboBox.addItem('C')
+        for cla in model:
+            self.comboBox.addItem(cla)
 
     def showEvent(self, *args, **kwargs):
         self.lineEdit.setText("未设置")
@@ -148,6 +160,7 @@ class addVip(QtWidgets.QMainWindow,Ui_vip):
         self.close()
 
 if __name__=="__main__":
+    # print(type(model))
     app = QtWidgets.QApplication(sys.argv)
     add=addWimdow()
     addVip=addVip()

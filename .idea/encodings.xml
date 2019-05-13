@@ -2,6 +2,8 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/ReadingRoom.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ReadingRoom/阅览室A.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ReadingRoom/阅览室B.txt" charset="GBK" />
     <file url="file://$PROJECT_DIR$/ReadingRoom/阅览室C.txt" charset="GBK" />
   </component>
 </project>
