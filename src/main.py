@@ -1,4 +1,6 @@
 import time
+
+from PyQt5.QtCore import QDate, QTime
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QListWidgetItem
 from UI.main import Ui_Library
 from UI.add import Ui_addReadingRoom
@@ -46,7 +48,12 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
 
 
     def find(self):
-        time=self.dateTimeEdit.text()
+        data=self.dateTimeEdit.date()
+        d = QDate(2019, 3, 4)
+        day=d.daysTo(data)
+        time=self.dateTimeEdit.time()
+        hour=time.hour()
+        minute=time.minute()
         row = self.listWidget.currentRow()
         fname = '..\ReadingRoom/' + self.listWidget.item(row).text().strip('\n') + '.txt'
         fobj = open(fname, 'r')
@@ -58,16 +65,91 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
             for i in line[0]:
                 num=num*10+int(i)
             zhuanye=line[2]
-
-            newItem = QTableWidgetItem(line[1])              #查询的时间
-            newItem.setBackground(QtCore.Qt.gray)        #空闲灰色
-            # newItem.setBackground(QtCore.Qt.red)       #非空闲显示红色
-            self.tableWidget.setItem(num / 10, num % 10, newItem)
+            if zhuanye!="空":
+                scope=model[zhuanye]
+                if day/7>=18:
+                    newItem = QTableWidgetItem("放假")
+                    newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                    self.tableWidget.setItem(num / 10, num % 10, newItem)
+                else:
+                    if day%7>4:             #周六日
+                        newItem = QTableWidgetItem("占用")  # 查询的时间
+                        newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                        self.tableWidget.setItem(num / 10, num % 10, newItem)
+                    else:
+                        if time<t1:
+                            newItem = QTableWidgetItem("占用")  # 查询的时间
+                            newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                            self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        elif time>t1 and time<t2:
+                            col = day % 7 * 5 + 0
+                            if scope[int(day/7)][col]==1:
+                                t=100-(hour-8)*60-minute
+                                newItem = QTableWidgetItem('空闲'+str(t)+'分钟') # 查询的时间
+                                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                            else:
+                                newItem = QTableWidgetItem("占用")  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        elif time>t3 and time<t4:
+                            col = day % 7 * 5 + 1
+                            if scope[int(day/7)][col]==1:
+                                t=100-(hour-10)*60-minute
+                                newItem = QTableWidgetItem('空闲' + str(t) + '分钟')  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                            else:
+                                newItem = QTableWidgetItem("占用")  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        elif time>t5 and time<t6:
+                            col = day % 7 * 5 + 2
+                            if scope[int(day/7)][col]==1:
+                                t=130-(hour-13)*60-minute
+                                newItem = QTableWidgetItem('空闲' + str(t) + '分钟')  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                            else:
+                                newItem = QTableWidgetItem("占用")  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        elif time>t7 and time<t8:
+                            col = day % 7 * 5 + 3
+                            if scope[int(day/7)][col]==1:
+                                t = 130 - (hour - 15) * 60 - minute
+                                newItem = QTableWidgetItem('空闲' + str(t) + '分钟')  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                            else:
+                                newItem = QTableWidgetItem("占用")  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        elif time>t9 and time<t10:
+                            col = day % 7 * 5 + 4
+                            if scope[int(day/7)][col]==1:
+                                t = 180 - (hour - 18) * 60 - minute
+                                newItem = QTableWidgetItem('空闲' + str(t) + '分钟')  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                            else:
+                                newItem = QTableWidgetItem("占用")  # 查询的时间
+                                newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                                self.tableWidget.setItem(num / 10, num % 10, newItem)
+                        else:
+                            newItem = QTableWidgetItem("占用")  # 查询的时间
+                            # newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                            newItem.setBackground(QtCore.Qt.red)  # 非空闲显示红色
+                            self.tableWidget.setItem(num / 10, num % 10, newItem)
+            else:
+                newItem = QTableWidgetItem("未分配")
+                newItem.setBackground(QtCore.Qt.gray)  # 空闲灰色
+                self.tableWidget.setItem(num / 10, num % 10, newItem)
             name = fobj.readline()
 
     def load_data(self, sp):
         for i in range(1, 100):  # 模拟主程序加载过程
-            time.sleep(0.04)  # 加载数据
+            # time.sleep(0.04)  # 加载数据
             sp.showMessage("加载... {0}%".format(i), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
@@ -190,7 +272,16 @@ class addVip(QtWidgets.QMainWindow,Ui_vip):
         self.close()
 
 if __name__=="__main__":
-    # print(type(model))
+    t1 = QTime(8, 0)
+    t2 = QTime(9, 40)
+    t3 = QTime(10, 0)
+    t4 = QTime(11, 40)
+    t5 = QTime(13, 30)
+    t6 = QTime(15, 10)
+    t7 = QTime(15, 30)
+    t8 = QTime(17, 10)
+    t9 = QTime(18, 30)
+    t10 = QTime(21, 00)
     app = QtWidgets.QApplication(sys.argv)
     add=addWimdow()
     addVip=addVip()
