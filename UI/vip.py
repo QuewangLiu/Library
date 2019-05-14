@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_vip(object):
     def setupUi(self, vip):
         vip.setObjectName("vip")
+        vip.setEnabled(True)
         vip.resize(332, 294)
         vip.setMinimumSize(QtCore.QSize(332, 294))
         vip.setMaximumSize(QtCore.QSize(332, 294))
@@ -68,7 +69,8 @@ class Ui_vip(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         self.comboBox.setFont(font)
-        self.comboBox.setEditable(True)
+        self.comboBox.setEditable(False)
+        self.comboBox.setCurrentText("")
         self.comboBox.setObjectName("comboBox")
         self.horizontalLayout_2.addWidget(self.comboBox)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -100,6 +102,5 @@ class Ui_vip(object):
         self.label.setText(_translate("vip", "姓名："))
         self.lineEdit.setText(_translate("vip", "未设置"))
         self.label_2.setText(_translate("vip", "专业："))
-        self.comboBox.setCurrentText(_translate("vip", "空"))
         self.pushButton.setText(_translate("vip", "确认"))
 

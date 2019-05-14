@@ -5,6 +5,7 @@ from UI.add import Ui_addReadingRoom
 from PyQt5 import QtWidgets,QtGui,QtCore
 from UI.vip import Ui_vip
 import sys
+import os
 
 import pickle
 with open('..\major_dict.pkl', 'rb') as f:model = pickle.load(f)
@@ -16,6 +17,33 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
         self.pushButton_2.clicked.connect(self.addRead)
         self.listWidget.itemClicked.connect(self.showRoom)
         self.pushButton.clicked.connect(self.find)
+        self.pushButton_3.clicked.connect(self.remove)
+
+    def remove(self):
+        reply = QMessageBox.question(self, "Tips", "确认删除阅览室？")
+        if reply == QMessageBox.Yes:
+            self.tableWidget.clear()
+            row = self.listWidget.currentRow()
+            fname = '..\ReadingRoom/' + self.listWidget.item(row).text().strip('\n') + '.txt'
+            if os.path.exists(fname):
+                os.remove(fname)
+            with open("..\ReadingRoom.txt", "r") as f:
+                lines = f.readlines()
+                # print(lines)
+            with open("..\ReadingRoom.txt", "w") as f_w:
+                for line in lines:
+                    if self.listWidget.item(row).text() in line:
+                        continue
+                    f_w.write(line)
+            window.listWidget.clear()
+            f = open('..\ReadingRoom.txt', 'r')
+            name = f.readline()
+            while name != "":
+                Item = QListWidgetItem(name)
+                window.listWidget.addItem(Item)
+                name = f.readline()
+            f.close()
+
 
     def find(self):
         time=self.dateTimeEdit.text()
@@ -143,6 +171,8 @@ class addVip(QtWidgets.QMainWindow,Ui_vip):
         super(addVip, self).__init__()
         self.setupUi(self)
         self.pushButton.clicked.connect(self.click)
+        self.comboBox.setCurrentText("空")
+        self.comboBox.addItem("空")
         for cla in model:
             self.comboBox.addItem(cla)
 

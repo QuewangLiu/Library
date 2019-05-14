@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>vip</class>
  <widget class="QMainWindow" name="vip">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -113,10 +116,10 @@
          </font>
         </property>
         <property name="editable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="currentText">
-         <string>空</string>
+         <string/>
         </property>
        </widget>
       </item>
