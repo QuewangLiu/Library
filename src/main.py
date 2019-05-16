@@ -149,7 +149,7 @@ class mainWindow(QtWidgets.QMainWindow, Ui_Library):
 
     def load_data(self, sp):
         for i in range(1, 100):  # 模拟主程序加载过程
-            # time.sleep(0.04)  # 加载数据
+            time.sleep(0.04)  # 加载数据
             sp.showMessage("加载... {0}%".format(i), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
